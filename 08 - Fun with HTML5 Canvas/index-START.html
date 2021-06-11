@@ -7,6 +7,54 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+	const canvas = document.querySelector('#draw');
+	canvas.width = window.innerWidth;
+	canvas.height - window.innerHeight;
+
+  const ctx = canvas.getContext('2d');  
+  ctx.strokeStyle = '#BADA55';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 10;
+
+  let initY = 0;
+  let initX = 0;
+  let hue = 0;
+  //flag fow when mouse down
+  let isDrawing = false;
+  let increase = true;
+  function draw(e){
+    if(!isDrawing) return;
+    console.log(e);
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    //starts path of line
+    ctx.beginPath();
+
+    //starting coordinates
+    ctx.moveTo(initX, initY);
+
+    //draws to mouse offset movement
+    ctx.lineTo(e.offsetX, e.offsetY);
+
+    //actually draws line on canvas
+    ctx.stroke();
+
+    [initX, initY] = [e.offsetX, e.offsetY];
+    if(ctx.lineWidth >=50 || ctx.lineWidth <= 1){
+      increase = !increase
+    }
+
+    increase? ctx.lineWidth++ : ctx.lineWidth--;
+    hue=(hue+1)%360; 
+  }
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    [initX, initY] = [e.offsetX, e.offsetY];
+  });
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+  canvas.addEventListener('mousemove', draw);
 </script>
 
 <style>
