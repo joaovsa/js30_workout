@@ -10,7 +10,7 @@
 
   <script>
     const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
-
+    const p = document.querySelector('p');
     function makeGreen() {
       const p = document.querySelector('p');
       p.style.color = '#BADA55';
@@ -18,29 +18,71 @@
     }
 
     // Regular
+    console.log('I like dogs');
 
     // Interpolated
-
+    //c style
+    console.log('Me gusta %s', 'ti');
+    console.log('Me gusta %s', 'tu');
+    
     // Styled
+    console.log('%c This is a styled log :)', 'font-size: 20px; background-color: cyan; font-family: "Comic Sans MS", "Comic Sans", cursive;');
 
     // warning!
-
+    console.warn("Haven't you had already a lot of chocolate?");
+    
     // Error :|
+    console.error("Out of water");
 
     // Info
+    console.info("I'm nailing it");
 
     // Testing
+    console.assert( 1 === 2, "test is fun" );
 
     // clearing
+    console.clear();
 
     // Viewing DOM Elements
+    console.dir(p);
 
     // Grouping together
-
+    
+      dogs.forEach(dog => {
+        console.groupCollapsed(`${dog.name}`);
+          console.log(`This is ${dog.name}`);
+          console.log(`${dog.name} is ${dog.age} years old`);
+        console.groupEnd(`${dog.name}`);
+      });
+    
     // counting
+    console.count('Bananas');
+    console.count('Dipijamas');
+    console.count('Dipijamas');
+    console.count('Dipijamas');
+    console.count('Dipijamas');
+    console.count('Dipijamas');
+    console.count('Bananas');
+    console.count('Dipijamas');
+    console.count('Bananas');
+    console.count('Dipijamas');
+    console.count('Bananas');
+    console.count('Dipijamas');
+    console.count('Bananas');
+    console.count('Dipijamas');
 
     // timing
+    console.time('fetch api');
+      fetch('https://api.github.com/users/joaovsa')
+        .then(data => data.json())
+        .then(data =>{
+          console.timeEnd('fetch api');
+          console.log(data);
+        });
+    
 
+    //table
+    console.table(dogs);
   </script>
 </body>
 </html>
