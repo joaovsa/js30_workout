@@ -7,6 +7,21 @@
 </head>
 <body>
 <script>
+  const typed = [];
+  const secret = 'alexandre';
+  window.addEventListener('keyup', check);
+
+  function check(e){
+    console.log(e.key);
+    typed.push(e.key);
+    typed.splice(-secret.length-1, typed.length - secret.length);
+
+    console.log(typed);
+    if(typed.join('').toLowerCase()===secret){
+      console.log('SECRET MATCHED');
+      cornify_add();
+    }
+  }
 </script>
 </body>
 </html>
