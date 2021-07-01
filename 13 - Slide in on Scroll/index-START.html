@@ -43,7 +43,8 @@
   </div>
 
   <script>
-    function debounce(func, wait = 20, immediate = true) {
+    //debounce func got on internet to slow down scrolling
+    function debounce(func, wait = 10, immediate = true) {
       var timeout;
       return function() {
         var context = this, args = arguments;
@@ -57,7 +58,47 @@
         if (callNow) func.apply(context, args);
       };
     }
+    
+    const sliderImages = document.querySelectorAll('.slide-in');
+    function checkSlide(e){
+      // must recalculate every scroll
+      sliderImages.forEach( slideImage=>{
+        
+        //halfway through image
+        //protip: you must subtract half of image height since you are already considering a part of the image
+        //on the winder innerheight value
+        //protip II: scrollY takes place at the very top of the window
+        const slideInAt = (window.scrollY + window.innerHeight) - 
+          slideImage.height/2;
+        
+        //bottom of image
+        const imageBottom = slideImage.offsetTop + slideImage.height;
+        
+        const isHalfShown = slideInAt > slideImage.offsetTop;
+        const isNotScrolledPast =  window.scrollY < imageBottom;
+        // console.log(slideInAt);
 
+        if(isHalfShown && isNotScrolledPast){
+          slideImage.classList.add('active');
+        } else {
+          slideImage.classList.remove('active');
+        }
+
+        //console log everything to understand it better... wacky math, right?
+        console.log('IMAGE='+slideImage.src);
+        console.log('>>>> Window scrollY='+window.scrollY);
+        console.log('>>>> Window innerHeight='+window.innerHeight);
+        console.log('>>>> Half Image Heigth='+slideImage.height/2);
+        console.log('>>>> Slide in At ='+slideInAt);        
+        console.log('>>>> Img OffsetTop ='+slideImage.offsetTop);
+        console.log('>>>> isHalfShown ='+isHalfShown);
+        console.log('>>>> isNotScrolledPast ='+isNotScrolledPast);
+      });
+      
+
+    }
+
+    window.addEventListener('scroll', debounce(checkSlide));
   </script>
 
   <style>
