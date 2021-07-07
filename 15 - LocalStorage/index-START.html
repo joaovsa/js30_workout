@@ -28,8 +28,56 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  //tries retrieving localStores or gets nothins
+  const items = JSON.parse(localStorage.getItem('items')) || [];
 
+  function populateList(items=[], itemsList){
+    localStorage.setItem('items', JSON.stringify(items));
+    itemsList.innerHTML = items.map((item,i)=>{
+      return `
+      <li>
+        <input type="checkbox" id="item${i}" data-index="${i}" ${item.done? 'checked': ''}/>
+        <label for="item${i}">${item.text}</label>
+      </li>`
+    }).join('');
+
+  }
+
+  function addToMenu(e){
+    //use this to narrow down the search! (only in the form obj)
+    const text = this.querySelector('[name=item]').value;
+    const foodObj = {
+      text, //ES6 text:text,
+      done: false
+    }
+
+    console.log(`${foodObj.text} added to menu`);
+    
+    items.push(foodObj);
+    populateList(items, itemsList);
+    
+    //prevents submit to reload page
+    e.preventDefault();
+    this.reset();
+  }
+
+  function toggleDone(e){
+    
+    if (!e.target.matches('input')) return;
+    const index=e.target.dataset.index
+    items[index].done = !items[index].done; 
+    
+    //unnecessary populate, but it is in the final file
+    populateList(items, itemsList);
+    localStorage.setItem('items', JSON.stringify(items));
+
+  }
+
+  addItems.addEventListener('submit', addToMenu);
+  //listen to parent list node for event
+  itemsList.addEventListener('click', toggleDone);
+  //bascially populates on page load
+  populateList(items,itemsList);
 </script>
 
 
